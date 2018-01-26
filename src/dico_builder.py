@@ -168,6 +168,12 @@ def get_candidates(emb1, emb2, params):
 def build_dictionary(src_emb, tgt_emb, params, s2t_candidates=None, t2s_candidates=None):
     """
     Build a training dictionary given current embeddings / mapping.
+    src_emb :: <src_emb> x <emb_dim> Matrix of floats
+    src_emb = mapped embeddings of source words
+    tgt_emb :: <tgt_emb> x <emb_dim> Matrix of floats
+    tgt_emb = embeddings of target words
+    s2t_candidates :: k x 2 matrix of ints
+    t2s_candidates :: l x 2 matrix of ints
     """
     logger.info("Building the train dictionary ...")
     s2t = 'S2T' in params.dico_build
@@ -183,16 +189,20 @@ def build_dictionary(src_emb, tgt_emb, params, s2t_candidates=None, t2s_candidat
         t2s_candidates = torch.cat([t2s_candidates[:, 1:], t2s_candidates[:, :1]], 1)
 
     if params.dico_build == 'S2T':
+        # Only use best candidates for source->target translation
         dico = s2t_candidates
     elif params.dico_build == 'T2S':
+        # Only use best candidates fot target->source translation
         dico = t2s_candidates
     else:
         s2t_candidates = set([(a, b) for a, b in s2t_candidates])
         t2s_candidates = set([(a, b) for a, b in t2s_candidates])
         if params.dico_build == 'S2T|T2S':
+            # Return the union of S2T and T2S candidate dictionaries
             final_pairs = s2t_candidates | t2s_candidates
         else:
             assert params.dico_build == 'S2T&T2S'
+            # Only mutual nearest neighbors are in the final dictionary
             final_pairs = s2t_candidates & t2s_candidates
             if len(final_pairs) == 0:
                 logger.warning("Empty intersection ...")
@@ -200,4 +210,8 @@ def build_dictionary(src_emb, tgt_emb, params, s2t_candidates=None, t2s_candidat
         dico = torch.LongTensor(list([[a, b] for (a, b) in final_pairs]))
 
     logger.info('New train dictionary of %i pairs.' % dico.size(0))
+    # dico :: m x 2 Matrix of ints
+    # rows of dico are pairs (i, j) where target word j is the translation of
+    # source word i and vice versa
     return dico.cuda() if params.cuda else dico
+
