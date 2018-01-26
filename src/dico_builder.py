@@ -17,6 +17,11 @@ logger = getLogger()
 def get_candidates(emb1, emb2, params):
     """
     Get best translation pairs candidates.
+    emb1 :: <src_emb> x <emb_dim> Matrix of floats
+    emb2 :: <tgt_emb> x <emb_dim> Matrix of floats
+    Returns a k x 2 matrix where each row is a pair (i, j),
+    meaning that target word j is the best translation candidate for source
+    word i.
     """
     bs = 128
 
@@ -99,15 +104,27 @@ def get_candidates(emb1, emb2, params):
         all_scores = torch.cat(all_scores, 0)
         all_targets = torch.cat(all_targets, 0)
 
+    # all_scores :: <src_emb> x 2 Matrix of floats
+    # all_scores[i] = [ score of the most similar vector in target space
+    #                 , score of the 2nd most similar vector in target space ]
+    # all_targets :: <src_emb> x 1 Matrix of ints
+    # all_targets[i, 0] = index of the target embedding closest to source
+    # embedding i
+
     all_pairs = torch.cat([
         torch.arange(0, all_targets.size(0)).long().unsqueeze(1),
         all_targets[:, 0].unsqueeze(1)
     ], 1)
 
+    # all_pairs :: <src_emb> x 2 Matrix of ints
+    # rows of all_pairs are pairs (i, j), where target word j is the best
+    # candidate for the translation of source word i
+
     # sanity check
     assert all_scores.size() == all_pairs.size() == (n_src, 2)
 
     # sort pairs by score confidence
+    # (that is the difference between the best score and the 2nd best score)
     diff = all_scores[:, 0] - all_scores[:, 1]
     reordered = diff.sort(0, descending=True)[1]
     all_scores = all_scores[reordered]
@@ -115,6 +132,7 @@ def get_candidates(emb1, emb2, params):
 
     # max dico words rank
     if params.dico_max_rank > 0:
+        # select only words with index <= dico_max_rank
         selected = all_pairs.max(1)[0] <= params.dico_max_rank
         mask = selected.unsqueeze(1).expand_as(all_scores).clone()
         all_scores = all_scores.masked_select(mask).view(-1, 2)
@@ -122,21 +140,28 @@ def get_candidates(emb1, emb2, params):
 
     # max dico size
     if params.dico_max_size > 0:
+        # limit the dictionary size to dico_max_size
         all_scores = all_scores[:params.dico_max_size]
         all_pairs = all_pairs[:params.dico_max_size]
 
     # min dico size
     diff = all_scores[:, 0] - all_scores[:, 1]
     if params.dico_min_size > 0:
+        # make the first dico_min_size pairs VERY good
+        # so that their score is guaranteed to be above dico_threshold
         diff[:params.dico_min_size] = 1e9
 
     # confidence threshold
     if params.dico_threshold > 0:
+        # discard translations where the score is below the threshold
         mask = diff > params.dico_threshold
         logger.info("Selected %i / %i pairs above the confidence threshold." % (mask.sum(), diff.size(0)))
         mask = mask.unsqueeze(1).expand_as(all_pairs).clone()
         all_pairs = all_pairs.masked_select(mask).view(-1, 2)
 
+    # all_pairs :: k x 2 Matrix of ints, for some k
+    # rows of all_pairs are pairs (i, j), where target word j is the best
+    # candidate for the translation of source word i
     return all_pairs
 
 
