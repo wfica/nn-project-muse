@@ -7,6 +7,11 @@ Kod wygląda jakby robił to co powinien.
 Zastrzeżenia:
 - w artykule piszą, że do przewidywań dyskryminatora stosują 'smoothing coefficient s = 0.2'; natomiast w paramatrach ```unsupervised.py``` wartość domyślna ```dis_smooth``` wynosi 0.1
 - przez to, że korzystają z 'smoothing coefficient', to mają inne funkcje straty, tj. wzory (3) i (4) z artykułu nie informują o tym, że te wartości sie skaluje.
+- W paperze strata generatora uwzględnia dokładność dyskryminatora na zanurzeniach języka docelowego (tj. im gorsza dokładność dyskryminatora tym mniejsza wartość
+straty). Nie rozumiem dlaczego tak jest, bo ta dokładność nie zależy od parametrów generatora. Z drugiej strony to chyba niczego nie psuje, bo to nie zmienia gradientu.
+- Oni cytują paper _Adversarial Training for Unsupervised Bilingual Lexicon Induction_, w którym wzór na stratę generatora nie uwzględnia dokładności dyskryminatora
+na zanurzeniach języka docelowego.
+- W kodzie strata generatora jest liczona tak jak w paperze (pomijając brak smoothing coefficient) -- patrz `src/trainer.py` -> `mapping_step`.
 
 ### 2. czy Tabela 1 jest legitna (oni piszą, że Dinu et al [2015] wylicza accuracy dla 1500 testowych słów i robią tak samo, natomiast w pracy Dinu podaje szczegóły, że on wybiera ostrożnie te 1500 słów po 300 z binów różnej częstości),
 
