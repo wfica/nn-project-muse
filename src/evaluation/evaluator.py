@@ -149,11 +149,16 @@ class Evaluator(object):
 
     def dist_mean_cosine(self, to_log):
         """
-        Mean-cosine model selection criterion.
+        Calculates the unsupervised selection criterion by translating the
+        most frequent words in the source language
         """
         # get normalized embeddings
+
+        # Source embeddings mapped by the matrix
         src_emb = self.mapping(self.src_emb.weight).data
+        # Target embeddings
         tgt_emb = self.tgt_emb.weight.data
+        # Normalize both
         src_emb = src_emb / src_emb.norm(2, 1, keepdim=True).expand_as(src_emb)
         tgt_emb = tgt_emb / tgt_emb.norm(2, 1, keepdim=True).expand_as(tgt_emb)
 
@@ -201,11 +206,13 @@ class Evaluator(object):
 
         self.discriminator.eval()
 
+        # test the discriminator for all source embeddings
         for i in range(0, self.src_emb.num_embeddings, bs):
             emb = Variable(self.src_emb.weight[i:i + bs].data, volatile=True)
             preds = self.discriminator(self.mapping(emb))
             src_preds.extend(preds.data.cpu().tolist())
 
+        # test the discriminator for all target embeddings
         for i in range(0, self.tgt_emb.num_embeddings, bs):
             emb = Variable(self.tgt_emb.weight[i:i + bs].data, volatile=True)
             preds = self.discriminator(emb)
