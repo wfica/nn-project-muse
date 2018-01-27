@@ -192,7 +192,7 @@ def build_dictionary(src_emb, tgt_emb, params, s2t_candidates=None, t2s_candidat
         # Only use best candidates for source->target translation
         dico = s2t_candidates
     elif params.dico_build == 'T2S':
-        # Only use best candidates fot target->source translation
+        # Only use best candidates for target->source translation
         dico = t2s_candidates
     else:
         s2t_candidates = set([(a, b) for a, b in s2t_candidates])
