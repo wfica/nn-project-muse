@@ -28,10 +28,13 @@ class Trainer(object):
         """
         Initialize trainer script.
         """
+        # source and target embeddings
         self.src_emb = src_emb
         self.tgt_emb = tgt_emb
+        # dictionaries for translating between word ids and actual words
         self.src_dico = params.src_dico
         self.tgt_dico = getattr(params, 'tgt_dico', None)
+        # mapping froum source to target embeddings
         self.mapping = mapping
         self.discriminator = discriminator
         self.params = params
@@ -54,6 +57,14 @@ class Trainer(object):
     def get_dis_xy(self, volatile):
         """
         Get discriminator input batch / output target.
+        Sample random source and target embeddings and map source embeddings
+        using the mapper.
+        Returns a pair (x, y)
+        x :: (<batch_size> * 2) x <emb_dim> Matrix of floats
+        x = sampled embeddings
+        y :: (<batch_size> * 2) x 1 Matrix of floats
+        y[i] = 1 if x[i] is sampled from the source embeddings, 0 if from
+        target embeddings, adjusted by the smoothing coefficient (dis_smooth)
         """
         # select random word IDs
         bs = self.params.batch_size
