@@ -3,6 +3,7 @@
 Kod wygląda jakby robił to co powinien.
 - Nie znalazłem zaszytych stałych używanych do inicjalizacji generatora liczb losowych
 - Parametry modeli są inicjalizowane domyślną metodą z pytorcha
+
 Zastrzeżenia:
 - w artykule piszą, że do przewidywań dyskryminatora stosują 'smoothing coefficient s = 0.2'; natomiast w paramatrach ```unsupervised.py``` wartość domyślna ```dis_smooth``` wynosi 0.1
 - przez to, że korzystają z 'smoothing coefficient', to mają inne funkcje straty, tj. wzory (3) i (4) z artykułu nie informują o tym, że te wartości sie skaluje.
@@ -19,7 +20,7 @@ Ich sposób walidacji jest następujący:
 ### 3. jak dokładnie działa kryterium z rozdziału 3.5 (nie zrozumiałem jednoznacznie z tekstu),
 
 Kryterium wyboru modelu przy adwersarzu jest liczone tak, że budujemy
-słownik używając zanurzeń 10000 (zahardkodowana stała: `src/evaluator.py` -> `dist_mean_cosine`)
+słownik używając zanurzeń 10000 (zahardkodowana stała: `src/evaluation/evaluator.py` -> `dist_mean_cosine`)
 najczęstszych słów z obu języków i liczymy średnie podobieństwo tłumaczeń (cosine similarity)
 
 ### 4. który etap uczenia korzysta z ilu tyś. najczęstszych słów? Dyskryminator bierze 50k, Procrustes bierze ??? wypadających dobrze w CSLS. Ile słów jest w ostatecznym słowniku? Eksperymenty startują z 200k (rozdział 3.1),
