@@ -91,7 +91,7 @@ class Evaluator(object):
             results = get_word_translation_accuracy(
                 self.src_dico.lang, self.src_dico.word2id, self.src_dico.id2word, src_emb,
                 self.tgt_dico.lang, self.tgt_dico.word2id, self.tgt_dico.id2word, tgt_emb,
-                method=method, print_translations
+                method, print_translations
             )
             to_log.update([('%s-%s' % (k, method), v) for k, v in results])
 
