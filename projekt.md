@@ -34,15 +34,19 @@ Kryterium wyboru modelu przy adwersarzu jest liczone tak, że budujemy słownik 
 - Ostatecznie mamy macierz W i jej używamy do tłumacznia.
 ### 5. Czy high-quality dictionary użyty do zrobienia Tabelki 1 nie jest zbiasowany? Dlaczego on ma tylko 100k? Jak to się ma do tych wybieranych 1500?
 
-Z 1000 najpopularniejszych słów w języku angielskim, ground-truth English-German dictionary posiada 951 (95.1%). Zabrakło:
+Przeanalizowaliśmy słownik angielsko-niemiecki, nazywany ground-truth.
+
+Z 1000 najpopularniejszych słów w języku angielskim, słownik posiada 951 (95.1%). Zabrakło:
 ```
 a ago American among another as at be by Congress Democrat do establish go he herself himself I if in into it me Mr Mrs my no n't of oh ok on onto or PM relate Republican so than themselves those throughout to toward TV up upon us we
 ```
 
-Z 3000 najpopularniejszych słów w języku angielskim, ground-truth English-German dictionary posiada 2857 (95.2%). Zabrakło:
+Z 3000 najpopularniejszych słów w języku angielskim, słownik posiada 2857 (95.2%). Zabrakło:
 ```
 a ad African African-American ago ah AIDS AM American among another anymore appreciate Arab as Asian at be Bible British by Canadian Catholic CEO Chinese Christian Christmas conclude Congress congressional consist Democrat depending differently distinct DNA do elect e-mail emerge English entirely essentially establish European facility French furthermore German go God he heavily herself hi himself I ie if in incorporate Indian Internet into Iraqi Irish Islamic Israeli it Italian Japanese Jew Jewish Latin long-term manner me Mexican mm-hmm moreover Mr Mrs Ms Muslim my newly no nod notion n't obtain of oh ok Olympic on onto or ought ourselves Palestinian pant PC PM portion pursue rapidly regard regarding relate rely Republican Russian Senate shortly shrug so so-called Soviet Spanish suppose Supreme tablespoon tale than themselves those throughout to toward towards TV undergo United unless unlike up upon us vs we whenever whereas
 ```
+
+Słownik zawiera 101931 par tłumaczeń, z czego niektóre angielskie słowa powtarzają się - unikalnych słów jest 74655.
 
 ### Raport z odpalenia EN-PL na 5 epok
 ```
@@ -118,3 +122,116 @@ INFO - 01/30/18 00:51:09 - 0:28:28 - Mean cosine (csls_knn_10 method, S2T build,
 INFO - 01/30/18 00:51:13 - 0:28:32 - Discriminator source / target predictions: 0.89890 / 0.32330
 INFO - 01/30/18 00:51:13 - 0:28:32 - Discriminator source / target / global accuracy: 0.99720 / 0.77079 / 0.88399
 ```
+
+### 50 najpopularniejszych angielskich i polskich słów według wiki.en.vec i wiki.pl.vec
+```
+$ awk '{ print $1 }' data/wiki.en.vec | head -n 50
+,
+.
+the
+</s>
+of
+-
+in
+and
+'
+)
+(
+to
+a
+is
+was
+on
+s
+for
+as
+by
+that
+it
+with
+from
+at
+he
+this
+be
+i
+an
+utc
+his
+not
+–
+are
+or
+talk
+which
+also
+has
+were
+but
+have
+#
+one
+rd
+new
+first
+page
+```
+
+```
+$ awk '{ print $1 }' data/wiki.pl.vec | head -n 50
+</s>
+.
+,
+w
+-
+)
+(
+'
+i
+–
+na
+z
+do
+się
+align
+roku
+a
+jest
+rd
+nie
+od
+o
+to
+#
+przez
+left
+po
+score
+jako
+oraz
+"
+że
+został
+był
+m
+ur
+za
+r
+jego
+dla
+center
+tym
+pod
+cest
+latach
+dyskusja
+są
+jak
+the
+```
+
+### BONUS: jakość tłumaczenia FB
+
+**Yes/Nie**
+
+![BONUS](fb-dict-quality-bonus.jpg "BONUS")
