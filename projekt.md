@@ -33,3 +33,14 @@ Kryterium wyboru modelu przy adwersarzu jest liczone tak, że budujemy słownik 
 - Natomiast do walidacji bierzemy 10k najczęstszych słów, używamy CSLC aby znaleźć ich tłumacznie, a następnie liczymy średnią z odległości cosinusowej pomiędzy słowami a ich domniemanymi tłumaczeniami.
 - Ostatecznie mamy macierz W i jej używamy do tłumacznia.
 ### 5. Czy high-quality dictionary użyty do zrobienia Tabelki 1 nie jest zbiasowany? Dlaczego on ma tylko 100k? Jak to się ma do tych wybieranych 1500?
+
+Z 1000 najpopularniejszych słów w języku angielskim, ground-truth English-German dictionary posiada 951 (95.1%). Zabrakło:
+```
+a ago American among another as at be by Congress Democrat do establish go he herself himself I if in into it me Mr Mrs my no n't of oh ok on onto or PM relate Republican so than themselves those throughout to toward TV up upon us we
+```
+
+Z 3000 najpopularniejszych słów w języku angielskim, ground-truth English-German dictionary posiada 2857 (95.2%). Zabrakło:
+```
+a ad African African-American ago ah AIDS AM American among another anymore appreciate Arab as Asian at be Bible British by Canadian Catholic CEO Chinese Christian Christmas conclude Congress congressional consist Democrat depending differently distinct DNA do elect e-mail emerge English entirely essentially establish European facility French furthermore German go God he heavily herself hi himself I ie if in incorporate Indian Internet into Iraqi Irish Islamic Israeli it Italian Japanese Jew Jewish Latin long-term manner me Mexican mm-hmm moreover Mr Mrs Ms Muslim my newly no nod notion n't obtain of oh ok Olympic on onto or ought ourselves Palestinian pant PC PM portion pursue rapidly regard regarding relate rely Republican Russian Senate shortly shrug so so-called Soviet Spanish suppose Supreme tablespoon tale than themselves those throughout to toward towards TV undergo United unless unlike up upon us vs we whenever whereas
+```
+
