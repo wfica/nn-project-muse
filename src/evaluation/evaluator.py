@@ -89,8 +89,8 @@ class Evaluator(object):
 
         for method in ['nn', 'csls_knn_10']:
             results = get_word_translation_accuracy(
-                self.src_dico.lang, self.src_dico.word2id, src_emb,
-                self.tgt_dico.lang, self.tgt_dico.word2id, tgt_emb,
+                self.src_dico.lang, self.src_dico.word2id, self.src_dico.id2word, src_emb,
+                self.tgt_dico.lang, self.tgt_dico.word2id, self.tgt_dico.id2word, tgt_emb,
                 method=method
             )
             to_log.update([('%s-%s' % (k, method), v) for k, v in results])

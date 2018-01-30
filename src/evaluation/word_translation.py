@@ -79,7 +79,8 @@ def load_dictionary(path, word2id1, word2id2):
     return dico
 
 
-def get_word_translation_accuracy(lang1, word2id1, emb1, lang2, word2id2, emb2, method):
+def get_word_translation_accuracy(lang1, word2id1, id2word1, emb1,
+                                  lang2, word2id2, id2word2, emb2, method):
     """
     Given source and target word embeddings, and a dictionary,
     evaluate the translation accuracy using the precision@k.
