@@ -44,3 +44,77 @@ Z 3000 najpopularniejszych słów w języku angielskim, ground-truth English-Ger
 a ad African African-American ago ah AIDS AM American among another anymore appreciate Arab as Asian at be Bible British by Canadian Catholic CEO Chinese Christian Christmas conclude Congress congressional consist Democrat depending differently distinct DNA do elect e-mail emerge English entirely essentially establish European facility French furthermore German go God he heavily herself hi himself I ie if in incorporate Indian Internet into Iraqi Irish Islamic Israeli it Italian Japanese Jew Jewish Latin long-term manner me Mexican mm-hmm moreover Mr Mrs Ms Muslim my newly no nod notion n't obtain of oh ok Olympic on onto or ought ourselves Palestinian pant PC PM portion pursue rapidly regard regarding relate rely Republican Russian Senate shortly shrug so so-called Soviet Spanish suppose Supreme tablespoon tale than themselves those throughout to toward towards TV undergo United unless unlike up upon us vs we whenever whereas
 ```
 
+### Raport z odpalenia EN-PL na 5 epok
+```
+Monolingual source word similarity score average: 0.63786
+INFO - 01/26/18 16:33:17 - 0:25:16 - Found 2745 pairs of words in the dictionary (1500 unique). 0 other pairs contained at least one unknown word (0 in lang1, 0 in lang2)
+INFO - 01/26/18 16:33:17 - 0:25:17 - 1500 source words - nn - Precision at k = 1: 0.000000
+INFO - 01/26/18 16:33:17 - 0:25:17 - 1500 source words - nn - Precision at k = 5: 0.000000
+INFO - 01/26/18 16:33:18 - 0:25:17 - 1500 source words - nn - Precision at k = 10: 0.000000
+INFO - 01/26/18 16:33:18 - 0:25:17 - Found 2745 pairs of words in the dictionary (1500 unique). 0 other pairs contained at least one unknown word (0 in lang1, 0 in lang2)
+INFO - 01/26/18 16:33:45 - 0:25:44 - 1500 source words - csls_knn_10 - Precision at k = 1: 0.000000
+INFO - 01/26/18 16:33:45 - 0:25:44 - 1500 source words - csls_knn_10 - Precision at k = 5: 0.000000
+INFO - 01/26/18 16:33:45 - 0:25:45 - 1500 source words - csls_knn_10 - Precision at k = 10: 0.000000
+INFO - 01/26/18 16:34:06 - 0:26:06 - Building the train dictionary ...
+INFO - 01/26/18 16:34:06 - 0:26:06 - New train dictionary of 2563 pairs.
+INFO - 01/26/18 16:34:06 - 0:26:06 - Mean cosine (nn method, S2T build, 10000 max size): 0.50096
+INFO - 01/26/18 16:35:30 - 0:27:29 - Building the train dictionary ...
+INFO - 01/26/18 16:35:30 - 0:27:29 - New train dictionary of 1911 pairs.
+INFO - 01/26/18 16:35:30 - 0:27:29 - Mean cosine (csls_knn_10 method, S2T build, 10000 max size): 0.47842
+INFO - 01/26/18 16:35:34 - 0:27:34 - Discriminator source / target predictions: 0.88776 / 0.16134
+INFO - 01/26/18 16:35:34 - 0:27:34 - Discriminator source / target / global accuracy: 0.99906 / 0.95717 / 0.97812
+```
+
+### Raport z odpalenia EN-ES na 5 epok
+```
+INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
+INFO - 01/30/18 00:48:52 - 0:26:11 -                        Dataset      Found     Not found          Rho
+INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
+INFO - 01/30/18 00:48:52 - 0:26:11 -                       EN_MC-30         30             0       0.8612
+INFO - 01/30/18 00:48:52 - 0:26:11 -                   EN_MTurk-771        771             0       0.6524
+INFO - 01/30/18 00:48:52 - 0:26:11 -                      EN_YP-130        130             0       0.4754
+INFO - 01/30/18 00:48:52 - 0:26:11 -                 EN_RW-STANFORD       1323           711       0.5011
+INFO - 01/30/18 00:48:52 - 0:26:11 -                   EN_MTurk-287        286             1       0.6530
+INFO - 01/30/18 00:48:52 - 0:26:11 -                  EN_SIMLEX-999        998             1       0.3705
+INFO - 01/30/18 00:48:52 - 0:26:11 -                  EN_WS-353-ALL        353             0       0.7191
+INFO - 01/30/18 00:48:52 - 0:26:11 -                   EN_MEN-TR-3k       3000             0       0.7547
+INFO - 01/30/18 00:48:52 - 0:26:11 -                  EN_WS-353-SIM        203             0       0.7747
+INFO - 01/30/18 00:48:52 - 0:26:11 -                       EN_RG-65         65             0       0.7938
+INFO - 01/30/18 00:48:52 - 0:26:11 -                    EN_VERB-143        144             0       0.3577
+INFO - 01/30/18 00:48:52 - 0:26:11 -                  EN_WS-353-REL        252             0       0.6588
+INFO - 01/30/18 00:48:52 - 0:26:11 -                   EN_SEMEVAL17        379             9       0.7060
+INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
+INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
+INFO - 01/30/18 00:48:52 - 0:26:11 -                        Dataset      Found     Not found          Rho
+INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
+INFO - 01/30/18 00:48:52 - 0:26:11 -                   ES_SEMEVAL17        368            10       0.7392
+INFO - 01/30/18 00:48:52 - 0:26:11 -                       ES_MC-30         27             3       0.7475
+INFO - 01/30/18 00:48:52 - 0:26:11 -                       ES_RG-65         65             0       0.8794
+INFO - 01/30/18 00:48:52 - 0:26:11 -                      ES_WS-353        319            33       0.6126
+INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
+INFO - 01/30/18 00:48:52 - 0:26:11 - Monolingual source word similarity score average: 0.63680
+INFO - 01/30/18 00:48:52 - 0:26:11 - Monolingual target word similarity score average: 0.74466
+INFO - 01/30/18 00:48:52 - 0:26:11 - Monolingual word similarity score average: 0.69073
+INFO - 01/30/18 00:48:53 - 0:26:12 - ====================================================================
+INFO - 01/30/18 00:48:53 - 0:26:12 -                        Dataset      Found     Not found          Rho
+INFO - 01/30/18 00:48:53 - 0:26:12 - ====================================================================
+INFO - 01/30/18 00:48:53 - 0:26:12 -                EN_ES_SEMEVAL17        729            19       0.5767
+INFO - 01/30/18 00:48:53 - 0:26:12 - ====================================================================
+INFO - 01/30/18 00:48:53 - 0:26:12 - Cross-lingual word similarity score average: 0.57671
+INFO - 01/30/18 00:48:53 - 0:26:12 - Found 2975 pairs of words in the dictionary (1500 unique). 0 other pairs contained at least one unknown word (0 in lang1, 0 in lang2)
+INFO - 01/30/18 00:48:53 - 0:26:12 - 1500 source words - nn - Precision at k = 1: 20.666667
+INFO - 01/30/18 00:48:53 - 0:26:12 - 1500 source words - nn - Precision at k = 5: 37.200000
+INFO - 01/30/18 00:48:54 - 0:26:13 - 1500 source words - nn - Precision at k = 10: 43.866667
+INFO - 01/30/18 00:48:54 - 0:26:13 - Found 2975 pairs of words in the dictionary (1500 unique). 0 other pairs contained at least one unknown word (0 in lang1, 0 in lang2)
+INFO - 01/30/18 00:49:22 - 0:26:41 - 1500 source words - csls_knn_10 - Precision at k = 1: 31.800000
+INFO - 01/30/18 00:49:22 - 0:26:41 - 1500 source words - csls_knn_10 - Precision at k = 5: 49.000000
+INFO - 01/30/18 00:49:23 - 0:26:42 - 1500 source words - csls_knn_10 - Precision at k = 10: 56.466667
+INFO - 01/30/18 00:49:43 - 0:27:02 - Building the train dictionary ...
+INFO - 01/30/18 00:49:43 - 0:27:02 - New train dictionary of 2339 pairs.
+INFO - 01/30/18 00:49:43 - 0:27:02 - Mean cosine (nn method, S2T build, 10000 max size): 0.56065
+INFO - 01/30/18 00:51:09 - 0:28:28 - Building the train dictionary ...
+INFO - 01/30/18 00:51:09 - 0:28:28 - New train dictionary of 3221 pairs.
+INFO - 01/30/18 00:51:09 - 0:28:28 - Mean cosine (csls_knn_10 method, S2T build, 10000 max size): 0.53287
+INFO - 01/30/18 00:51:13 - 0:28:32 - Discriminator source / target predictions: 0.89890 / 0.32330
+INFO - 01/30/18 00:51:13 - 0:28:32 - Discriminator source / target / global accuracy: 0.99720 / 0.77079 / 0.88399
+```
