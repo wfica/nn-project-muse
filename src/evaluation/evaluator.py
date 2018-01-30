@@ -79,7 +79,7 @@ class Evaluator(object):
         to_log['ws_crosslingual_scores'] = ws_crosslingual_scores
         to_log.update({'src_tgt_' + k: v for k, v in src_tgt_ws_scores.items()})
 
-    def word_translation(self, to_log):
+    def word_translation(self, to_log, print_translations=False):
         """
         Evaluation on word translation.
         """
@@ -91,7 +91,7 @@ class Evaluator(object):
             results = get_word_translation_accuracy(
                 self.src_dico.lang, self.src_dico.word2id, self.src_dico.id2word, src_emb,
                 self.tgt_dico.lang, self.tgt_dico.word2id, self.tgt_dico.id2word, tgt_emb,
-                method=method
+                method=method, print_translations
             )
             to_log.update([('%s-%s' % (k, method), v) for k, v in results])
 
@@ -186,13 +186,16 @@ class Evaluator(object):
                         % (dico_method, _params.dico_build, dico_max_size, mean_cosine))
             to_log['mean_cosine-%s-%s-%i' % (dico_method, _params.dico_build, dico_max_size)] = mean_cosine
 
-    def all_eval(self, to_log):
+    def all_eval(self, to_log, n_epoch):
         """
         Run all evaluations.
         """
         self.monolingual_wordsim(to_log)
         self.crosslingual_wordsim(to_log)
-        self.word_translation(to_log)
+        if n_epoch == 1:
+            self.word_translation(to_log, True)
+        else:
+            self.word_translation(to_log)
         self.sent_translation(to_log)
         self.dist_mean_cosine(to_log)
 

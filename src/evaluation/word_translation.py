@@ -5,6 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 #
 
+import sys
 import os
 from logging import getLogger
 import numpy as np
@@ -80,7 +81,7 @@ def load_dictionary(path, word2id1, word2id2):
 
 
 def get_word_translation_accuracy(lang1, word2id1, id2word1, emb1,
-                                  lang2, word2id2, id2word2, emb2, method):
+                                  lang2, word2id2, id2word2, emb2, method, print_translations):
     """
     Given source and target word embeddings, and a dictionary,
     evaluate the translation accuracy using the precision@k.
@@ -143,6 +144,13 @@ def get_word_translation_accuracy(lang1, word2id1, id2word1, emb1,
         # dico[:, 1][:, None] (LongTensor) has size 2745 x 1
         # top_k_matches (LongTensor) has size 2745 x k
         # _matching (ByteTensor) has size 2745
+
+        if k == 5 and print_translations:
+            for (i, row) in enumerate(top_k_matches):
+                print id2word1[ dico[:, 1][:, None][i][0] ]
+                for elem in row:
+                        sys.stdout.write(id2word2[elem] + " ") # no newline
+                print ''
 
         # allow for multiple possible translations
         matching = {}
