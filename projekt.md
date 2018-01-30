@@ -234,4 +234,4 @@ the
 
 **Yes/Nie**
 
-![BONUS](fb-dict-quality-bonus.jpg "BONUS")
+![BONUS](img/fb-dict-quality-bonus.jpg "BONUS")
