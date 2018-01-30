@@ -48,9 +48,28 @@ a ad African African-American ago ah AIDS AM American among another anymore appr
 
 Słownik zawiera 101931 par tłumaczeń, z czego niektóre angielskie słowa powtarzają się - unikalnych słów jest 74655.
 
+Słownik nie jest większy, bo to nie miałoby sensu - już teraz słownik ma słabą jakość.
+
 ### Raport z odpalenia EN-PL na 5 epok
 ```
-Monolingual source word similarity score average: 0.63786
+INFO - 01/26/18 16:33:16 - 0:25:15 - ====================================================================
+INFO - 01/26/18 16:33:16 - 0:25:15 -                        Dataset      Found     Not found          Rho
+INFO - 01/26/18 16:33:16 - 0:25:15 - ====================================================================
+INFO - 01/26/18 16:33:16 - 0:25:15 -                       EN_MC-30         30             0       0.8535
+INFO - 01/26/18 16:33:16 - 0:25:16 -                   EN_MTurk-771        771             0       0.6305
+INFO - 01/26/18 16:33:16 - 0:25:16 -                      EN_YP-130        130             0       0.5013
+INFO - 01/26/18 16:33:16 - 0:25:16 -                 EN_RW-STANFORD       1323           711       0.5249
+INFO - 01/26/18 16:33:16 - 0:25:16 -                   EN_MTurk-287        286             1       0.6321
+INFO - 01/26/18 16:33:16 - 0:25:16 -                  EN_SIMLEX-999        998             1       0.3629
+INFO - 01/26/18 16:33:16 - 0:25:16 -                  EN_WS-353-ALL        353             0       0.7274
+INFO - 01/26/18 16:33:16 - 0:25:16 -                   EN_MEN-TR-3k       3000             0       0.7325
+INFO - 01/26/18 16:33:16 - 0:25:16 -                  EN_WS-353-SIM        203             0       0.7642
+INFO - 01/26/18 16:33:16 - 0:25:16 -                       EN_RG-65         65             0       0.7923
+INFO - 01/26/18 16:33:16 - 0:25:16 -                    EN_VERB-143        144             0       0.4042
+INFO - 01/26/18 16:33:16 - 0:25:16 -                  EN_WS-353-REL        252             0       0.6595
+INFO - 01/26/18 16:33:16 - 0:25:16 -                   EN_SEMEVAL17        379             9       0.7067
+INFO - 01/26/18 16:33:16 - 0:25:16 - ====================================================================
+INFO - 01/26/18 16:33:16 - 0:25:16 - Monolingual source word similarity score average: 0.63786
 INFO - 01/26/18 16:33:17 - 0:25:16 - Found 2745 pairs of words in the dictionary (1500 unique). 0 other pairs contained at least one unknown word (0 in lang1, 0 in lang2)
 INFO - 01/26/18 16:33:17 - 0:25:17 - 1500 source words - nn - Precision at k = 1: 0.000000
 INFO - 01/26/18 16:33:17 - 0:25:17 - 1500 source words - nn - Precision at k = 5: 0.000000
@@ -122,6 +141,8 @@ INFO - 01/30/18 00:51:09 - 0:28:28 - Mean cosine (csls_knn_10 method, S2T build,
 INFO - 01/30/18 00:51:13 - 0:28:32 - Discriminator source / target predictions: 0.89890 / 0.32330
 INFO - 01/30/18 00:51:13 - 0:28:32 - Discriminator source / target / global accuracy: 0.99720 / 0.77079 / 0.88399
 ```
+
+Widzimy, że po 5 epokach precyzja dla `k = 1, 5, 10` dla tłumaczeń EN-PL jest zerowa, a dla tłumaczeń EN-ES jest niezerowa.
 
 ### 50 najpopularniejszych angielskich i polskich słów według wiki.en.vec i wiki.pl.vec
 ```
