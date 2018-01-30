@@ -192,7 +192,7 @@ class Evaluator(object):
         """
         self.monolingual_wordsim(to_log)
         self.crosslingual_wordsim(to_log)
-        if n_epoch == 1:
+        if not n_epoch mod 5:
             self.word_translation(to_log, True)
         else:
             self.word_translation(to_log)
