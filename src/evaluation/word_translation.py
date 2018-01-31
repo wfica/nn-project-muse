@@ -138,7 +138,7 @@ def get_word_translation_accuracy(lang1, word2id1, id2word1, emb1,
 
     results = []
     top_matches = scores.topk(100, 1, True)[1]
-    for k in [5]: # reduced from [1, 5, 10]
+    for k in [1, 5, 10]:
         top_k_matches = top_matches[:, :k]
         _matching = (top_k_matches == dico[:, 1][:, None].expand_as(top_k_matches)).sum(1)
         # dico[:, 1][:, None] (LongTensor) has size 2745 x 1
@@ -147,7 +147,7 @@ def get_word_translation_accuracy(lang1, word2id1, id2word1, emb1,
 
         if print_translations:
             for (i, row) in enumerate(top_k_matches):
-                sys.stdout.write(id2word1[ dico[:, 1][:, None][i][0] ] + ": ")
+                sys.stdout.write(id2word1[ dico[:, 0][:, None][i][0] ] + ": ")
                 for elem in row:
                         sys.stdout.write(id2word2[elem] + " ")
                 print ''
