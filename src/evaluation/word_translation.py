@@ -147,7 +147,7 @@ def get_word_translation_accuracy(lang1, word2id1, id2word1, emb1,
 
         if print_translations:
             for (i, row) in enumerate(top_k_matches):
-                sys.stdout.write(id2word1[ dico[:, 0][:, None][i][0] ] + ": ")
+                sys.stdout.write(id2word1[ dico[i, 0] ] + ": ")
                 for elem in row:
                         sys.stdout.write(id2word2[elem] + " ")
                 print ''
