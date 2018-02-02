@@ -8,30 +8,30 @@ We are thankful that our University faculty was granted Google Cloud Platform Cr
 
 ### 1. Does the code does what it should? In particular, are there any hacks not mentioned in the paper?
 The code looks as if it does what is should. 
-- We have not found any hidden constans that might have been used as  seeds to random number generator.
+- We have not found any hidden constants that might have been used as seeds to random number generator.
 - The model's parameters are initialized by some default method from pythorch.
 
 Reservations:
-- In the paper is it written that a ```smoothing coefficient s = 0.2``` is applied for descriminator's predictions, while in the parameters of ```unsupervised.py``` the default value of ```dis_smooth``` is equal to `0.1`.
-- In the paper, the generator's loss takes account of descriminator's accuracy on embeddings  of the target language ( i.e. the worst the accuracy, the lower the loss). We do not understand why it is so. On the one hand, the accuracy does not depend on generator's parameters, on the other such a loss does not spoil anything, since it does not affect the gadient. 
-- Moreover, the authors cite paper  _Adversarial Training for Unsupervised Bilingual Lexicon Induction_, in which the generator's loss does not count the descriminator's accuracy on embeddings  of the target language.
+- In the paper is it written that a ```smoothing coefficient s = 0.2``` is applied for discriminator's predictions, while in the parameters of ```unsupervised.py``` the default value of ```dis_smooth``` is equal to `0.1`.
+- In the paper, the generator's loss takes account of discriminator's accuracy on embeddings of the target language (i.e. the worst the accuracy, the lower the loss). We do not understand why it is so. On the one hand, the accuracy does not depend on generator's parameters, on the other such a loss does not spoil anything, since it does not affect the gradient. 
+- Moreover, the authors cite paper  _Adversarial Training for Unsupervised Bilingual Lexicon Induction_, in which the generator's loss does not count the discriminator's accuracy on embeddings of the target language.
 
 ### 2. What is the validation method? How many words are used for validation? 
 The validation method is as follows:
 - k is chosen from {1, 5, 10},
 - Let W consist of 1500 words that are arbitrarily chosen to be translated,
-- Let D consists od 200k most frequent words from the target language,
+- Let D consist od 200k most frequent words from the target language,
 - For each word of W: k best translations belonging to D are chosen,
 - The percentage of correct translations is calculated.
 
-### 3. How does the criterion form chapter 3.5 work?
+### 3. How does the criterion from chapter 3.5 work?
 This criterion tells how to choose the best model for the adversarial part. The criterion works as follows: using the embeddings, a dictionary of 10k most frequent words from both languages is created. Then the average cosine similarity of those translations is computed. 
 
 ### 4. How many most frequent words are used during each stage of the algorithm? 
 
 - 200k most frequent words are used for the validation (see 1.2.)
-- 50k  most frequent words are used for training the discriminator
-- The Procrustes step considers as many pairs as the algorithm produces. That is, a pair (Wx, y) is considered to be a translation if y is a kNN od Wx and Wx is a kNN od y. (The constant k = 10 is used for kNN. The authors claim that they did experiments with k = 5, 10 or 50 and the results were comparable.)
+- 50k most frequent words are used for training the discriminator
+- The Procrustes step considers as many pairs as the algorithm produces. That is, a pair (Wx, y) is considered to be a translation if y is a kNN of Wx and Wx is a kNN of y. (The constant k = 10 is used for kNN. The authors claim that they did experiments with k = 5, 10 or 50 and the results were comparable.)
 - In the validation step 10k most frequent words are considered. CSLC is used to find translations of those, and then the average cosine similarity between the words and their translations is computed.
 - In the end, the result of the algorithm is a matrix W, and it is used for translating. 
 
@@ -48,7 +48,7 @@ The dictionary contains 2857 (95.2%) words out of 3000 most frequent English wor
 a ad African African-American ago ah AIDS AM American among another anymore appreciate Arab as Asian at be Bible British by Canadian Catholic CEO Chinese Christian Christmas conclude Congress congressional consist Democrat depending differently distinct DNA do elect e-mail emerge English entirely essentially establish European facility French furthermore German go God he heavily herself hi himself I ie if in incorporate Indian Internet into Iraqi Irish Islamic Israeli it Italian Japanese Jew Jewish Latin long-term manner me Mexican mm-hmm moreover Mr Mrs Ms Muslim my newly no nod notion n't obtain of oh ok Olympic on onto or ought ourselves Palestinian pant PC PM portion pursue rapidly regard regarding relate rely Republican Russian Senate shortly shrug so so-called Soviet Spanish suppose Supreme tablespoon tale than themselves those throughout to toward towards TV undergo United unless unlike up upon us vs we whenever whereas
 ```
 
-The dictionary consists of 101931 pairs of translations, some of which are repeated. There is 74655 unique words. 
+The dictionary consists of 101931 pairs of translations, some of which are repeated. There are 74655 unique words. 
 It seems that there would be no benefit from enlarging the dictionary as it is already of a low quality.
 
 
@@ -148,7 +148,7 @@ INFO - 01/30/18 00:51:13 - 0:28:32 - Discriminator source / target / global accu
 ```
 
 ### Summary
-Clearly, after 5 epoch for `k = 1, 5, 10 ` for the EN-PL task the model works teribly badly, whreas for the EN-ES task the model works as stated in the paper. 
+Clearly, after 5 epoch for `k = 1, 5, 10` for the EN-PL task the model works terribly badly, whreas for the EN-ES task the model works as stated in the paper. 
 This significant difference might be caused by the fact that, compared to English or Spanish, there is an unnormous number of inflection rules in Polish.
 
 ## Bonus
