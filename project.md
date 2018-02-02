@@ -20,7 +20,7 @@ Reservations:
 The validation method is as follows:
 - k is chosen from {1, 5, 10},
 - Let W consist of 1500 words that are arbitrarily chosen to be translated,
-- Let D consist od 200k most frequent words from the target language,
+- Let D consist of 200k most frequent words from the target language,
 - For each word of W: k best translations belonging to D are chosen,
 - The percentage of correct translations is calculated.
 
