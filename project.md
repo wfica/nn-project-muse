@@ -1,8 +1,6 @@
-# Neural Network class project: ICLR 2018 Reproducibility Challenge
+# Project: ICLR 2018 Reproducibility Challenge
+### The final project for Neural Networks and Deep Learning 2017 class at the University of Wrocław
 The aim of this report is to discuss results presented in ['Word translation without parallel data'](https://arxiv.org/pdf/1710.04087.pdf) by A. Conneau, G. Lample, M. Ranzato, L. Denoyer and H. Jegou. This notice is a part of a neural network class project. The report consists of two parts. First, we answer question raised by our teacher. Then, we give a summary of our efforts to reproduce results claimed by the authors. 
-
-### Thank you, Google!
-We are thankful that our University faculty was granted Google Cloud Platform Credits, because of that we were able to reproduce the results from the paper. 
 
 ## Part 1: The Teacher's Questions
 
@@ -148,8 +146,18 @@ INFO - 01/30/18 00:51:13 - 0:28:32 - Discriminator source / target / global accu
 ```
 
 ### Summary
-Clearly, after 5 epoch for `k = 1, 5, 10` for the EN-PL task the model works terribly badly, whreas for the EN-ES task the model works as stated in the paper. 
-This significant difference might be caused by the fact that, compared to English or Spanish, there is an unnormous number of inflection rules in Polish.
+Clearly, after 5 epoch for `k = 1, 5, 10` for the EN-PL task the model works terribly badly, whereas for the EN-ES task the model works as stated in the paper. 
+This significant difference might be caused by the fact that, compared to English or Spanish, there is an ennormous number of inflection rules in Polish. For example, the word 'mam' could be derived from any of these: 'mama' [the mother], 'mamić' [to beguile] or 'mieć' [to have]. We suppose that there may not be any good linear relationship between Polish and English embeddings.
+
+We tried to improve the model performance on PL-EN translation task by changing Polish embeddings. First, using [Morfeusz](http://sgjp.pl/morfeusz/morfeusz.html.en) we mapped words form Polish Wikipedia to their uninflected forms. If there were multiple uninflected forms of a word then we chose the most frequent one (e.g., for 'mam' we chose 'mieć'). Then, we used this corpora to train new Polish embeddings. They proved to train the model way better. 
+
+TODO: dodać jakieś konkretne procenty
+
+To conclude, the paper is nicely written, the subject is interesting, the method gives good performance but there is still room for improvement.  
+
+
+## Acknowledgments
+The authors thank Google for GCE Credits awarded through Google Cloud Platform Education Grants to the Neural Networks and Deep Learning course and to this project.
 
 ## Bonus
 
