@@ -1,6 +1,6 @@
 # Project: ICLR 2018 Reproducibility Challenge
 ### The final project for Neural Networks and Deep Learning 2017 class at the University of Wrocław
-The aim of this report is to discuss results presented in ['Word translation without parallel data'](https://arxiv.org/pdf/1710.04087.pdf) by A. Conneau, G. Lample, M. Ranzato, L. Denoyer and H. Jegou. This notice is a part of a neural network class project. The report consists of two parts. First, we answer question raised by our teacher. Then, we give a summary of our efforts to reproduce results claimed by the authors. 
+The aim of this report is to discuss results presented in ['Word translation without parallel data'](https://arxiv.org/pdf/1710.04087.pdf) by A. Conneau, G. Lample, M. Ranzato, L. Denoyer and H. Jegou. This notice is a part of a neural network class project. The report consists of two parts. First, we answer question raised by our teacher. Then, we give a summary of our efforts to reproduce results claimed by the authors.
 
 ## Part 1: The Teacher's Questions
 
@@ -47,115 +47,101 @@ a ad African African-American ago ah AIDS AM American among another anymore appr
 ```
 
 The dictionary consists of 101931 pairs of translations, some of which are repeated. There are 74655 unique words.
-It seems that there would be no benefit from enlarging the dictionary as it is already of a low quality.
+It seems that there would be no benefit from enlarging the dictionary as it is already of not so high quality.
 
 
-## Part 2: The Reproduction of the Results
+## Part 2: The reproduction of the results
 
-### The results of running 5 epochs for EN-PL
+We focused on word translation retrieval using CSLS KNN. To start with, we ran 5 epochs of the project (unsupervised version) for EN to ES & EN to PL embeddings mapping.
+
+EN to PL word translation accuracy:
+- @1 `0.0%`
+- @5 `0.0%`
+- @10 `0.0%`
+
+where @k (like in the paper) means that we looked for correct translation among k nearest neighbours of source word multiplied by matrix `W`.
+
+EN to ES word translation accuracy:
+- @1 `31.8%`
+- @5 `49.0%`
+- @10 `56.5%`
+
+Clearly, after 5 epochs for the EN-PL task the model works terribly badly, whereas for the EN-ES task the model works as stated in the paper.
+
+
+This significant difference might be caused by the fact that, compared to English or Spanish, there is an enormous number of inflection rules in Polish. For example, the word 'mam' could be derived from any of these: 'mama' [the mother], 'mamić' [to beguile] or 'mieć' [to have]. Another example: the word 'dwa' [two] appears in Polish in a lot of forms: 'dwaj', 'dwie', 'dwóch', 'dwu', 'dwóm', 'dwom', 'dwoma', 'dwiema', 'dwójce', 'dwojgiem', 'dwojga', 'dwojgu', 'dwójka', etc. -- each means "two" but in different contexts. We suppose that there may not be any good linear relationship between Polish and English embeddings.
+
+---
+
+We tried to improve the model performance on EN-PL translation task by changing Polish embeddings. First, using [Morfeusz](http://sgjp.pl/morfeusz/morfeusz.html.en) we mapped words form Polish Wikipedia to their uninflected forms. If there were multiple uninflected forms of a word then we chose the most frequent one (e.g., for 'mam' we chose 'mieć'). Then, we used this corpora to train new Polish embeddings. They proved to train the model way better and we could gain acceptable results instead of just 0%.
+
+Now we ran EN-ES and EN-PL tasks for huge amount of epochs but they automatically stoped near epoch 25, when the improvement was too small.
+
+Results for EN-PL word translation accuracy:
+- @1 `43.3%`
+- @5 `60.7%`
+- @10 `66.5%`
+
+Results for EN-ES word translation accuracy:
+- @1 `75.7%`
+- @5 `87.8%`
+- @10 `90.3%`
+
+Results for EN-ES are comparable to those presented in the paper.
+
+---
+
+We also changed the source code a little in order to get those translations and not only percentage accuracy.
+
+Here are some samples for EN-PL, you see 10 nearest neighbours starting with the most probable:
 ```
-INFO - 01/26/18 16:33:16 - 0:25:15 - ====================================================================
-INFO - 01/26/18 16:33:16 - 0:25:15 -                        Dataset      Found     Not found          Rho
-INFO - 01/26/18 16:33:16 - 0:25:15 - ====================================================================
-INFO - 01/26/18 16:33:16 - 0:25:15 -                       EN_MC-30         30             0       0.8535
-INFO - 01/26/18 16:33:16 - 0:25:16 -                   EN_MTurk-771        771             0       0.6305
-INFO - 01/26/18 16:33:16 - 0:25:16 -                      EN_YP-130        130             0       0.5013
-INFO - 01/26/18 16:33:16 - 0:25:16 -                 EN_RW-STANFORD       1323           711       0.5249
-INFO - 01/26/18 16:33:16 - 0:25:16 -                   EN_MTurk-287        286             1       0.6321
-INFO - 01/26/18 16:33:16 - 0:25:16 -                  EN_SIMLEX-999        998             1       0.3629
-INFO - 01/26/18 16:33:16 - 0:25:16 -                  EN_WS-353-ALL        353             0       0.7274
-INFO - 01/26/18 16:33:16 - 0:25:16 -                   EN_MEN-TR-3k       3000             0       0.7325
-INFO - 01/26/18 16:33:16 - 0:25:16 -                  EN_WS-353-SIM        203             0       0.7642
-INFO - 01/26/18 16:33:16 - 0:25:16 -                       EN_RG-65         65             0       0.7923
-INFO - 01/26/18 16:33:16 - 0:25:16 -                    EN_VERB-143        144             0       0.4042
-INFO - 01/26/18 16:33:16 - 0:25:16 -                  EN_WS-353-REL        252             0       0.6595
-INFO - 01/26/18 16:33:16 - 0:25:16 -                   EN_SEMEVAL17        379             9       0.7067
-INFO - 01/26/18 16:33:16 - 0:25:16 - ====================================================================
-INFO - 01/26/18 16:33:16 - 0:25:16 - Monolingual source word similarity score average: 0.63786
-INFO - 01/26/18 16:33:17 - 0:25:16 - Found 2745 pairs of words in the dictionary (1500 unique). 0 other pairs contained at least one unknown word (0 in lang1, 0 in lang2)
-INFO - 01/26/18 16:33:17 - 0:25:17 - 1500 source words - nn - Precision at k = 1: 0.000000
-INFO - 01/26/18 16:33:17 - 0:25:17 - 1500 source words - nn - Precision at k = 5: 0.000000
-INFO - 01/26/18 16:33:18 - 0:25:17 - 1500 source words - nn - Precision at k = 10: 0.000000
-INFO - 01/26/18 16:33:18 - 0:25:17 - Found 2745 pairs of words in the dictionary (1500 unique). 0 other pairs contained at least one unknown word (0 in lang1, 0 in lang2)
-INFO - 01/26/18 16:33:45 - 0:25:44 - 1500 source words - csls_knn_10 - Precision at k = 1: 0.000000
-INFO - 01/26/18 16:33:45 - 0:25:44 - 1500 source words - csls_knn_10 - Precision at k = 5: 0.000000
-INFO - 01/26/18 16:33:45 - 0:25:45 - 1500 source words - csls_knn_10 - Precision at k = 10: 0.000000
-INFO - 01/26/18 16:34:06 - 0:26:06 - Building the train dictionary ...
-INFO - 01/26/18 16:34:06 - 0:26:06 - New train dictionary of 2563 pairs.
-INFO - 01/26/18 16:34:06 - 0:26:06 - Mean cosine (nn method, S2T build, 10000 max size): 0.50096
-INFO - 01/26/18 16:35:30 - 0:27:29 - Building the train dictionary ...
-INFO - 01/26/18 16:35:30 - 0:27:29 - New train dictionary of 1911 pairs.
-INFO - 01/26/18 16:35:30 - 0:27:29 - Mean cosine (csls_knn_10 method, S2T build, 10000 max size): 0.47842
-INFO - 01/26/18 16:35:34 - 0:27:34 - Discriminator source / target predictions: 0.88776 / 0.16134
-INFO - 01/26/18 16:35:34 - 0:27:34 - Discriminator source / target / global accuracy: 0.99906 / 0.95717 / 0.97812
-```
-
-### The results of running 5 epochs for EN-PL
-
-```
-INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
-INFO - 01/30/18 00:48:52 - 0:26:11 -                        Dataset      Found     Not found          Rho
-INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
-INFO - 01/30/18 00:48:52 - 0:26:11 -                       EN_MC-30         30             0       0.8612
-INFO - 01/30/18 00:48:52 - 0:26:11 -                   EN_MTurk-771        771             0       0.6524
-INFO - 01/30/18 00:48:52 - 0:26:11 -                      EN_YP-130        130             0       0.4754
-INFO - 01/30/18 00:48:52 - 0:26:11 -                 EN_RW-STANFORD       1323           711       0.5011
-INFO - 01/30/18 00:48:52 - 0:26:11 -                   EN_MTurk-287        286             1       0.6530
-INFO - 01/30/18 00:48:52 - 0:26:11 -                  EN_SIMLEX-999        998             1       0.3705
-INFO - 01/30/18 00:48:52 - 0:26:11 -                  EN_WS-353-ALL        353             0       0.7191
-INFO - 01/30/18 00:48:52 - 0:26:11 -                   EN_MEN-TR-3k       3000             0       0.7547
-INFO - 01/30/18 00:48:52 - 0:26:11 -                  EN_WS-353-SIM        203             0       0.7747
-INFO - 01/30/18 00:48:52 - 0:26:11 -                       EN_RG-65         65             0       0.7938
-INFO - 01/30/18 00:48:52 - 0:26:11 -                    EN_VERB-143        144             0       0.3577
-INFO - 01/30/18 00:48:52 - 0:26:11 -                  EN_WS-353-REL        252             0       0.6588
-INFO - 01/30/18 00:48:52 - 0:26:11 -                   EN_SEMEVAL17        379             9       0.7060
-INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
-INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
-INFO - 01/30/18 00:48:52 - 0:26:11 -                        Dataset      Found     Not found          Rho
-INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
-INFO - 01/30/18 00:48:52 - 0:26:11 -                   ES_SEMEVAL17        368            10       0.7392
-INFO - 01/30/18 00:48:52 - 0:26:11 -                       ES_MC-30         27             3       0.7475
-INFO - 01/30/18 00:48:52 - 0:26:11 -                       ES_RG-65         65             0       0.8794
-INFO - 01/30/18 00:48:52 - 0:26:11 -                      ES_WS-353        319            33       0.6126
-INFO - 01/30/18 00:48:52 - 0:26:11 - ====================================================================
-INFO - 01/30/18 00:48:52 - 0:26:11 - Monolingual source word similarity score average: 0.63680
-INFO - 01/30/18 00:48:52 - 0:26:11 - Monolingual target word similarity score average: 0.74466
-INFO - 01/30/18 00:48:52 - 0:26:11 - Monolingual word similarity score average: 0.69073
-INFO - 01/30/18 00:48:53 - 0:26:12 - ====================================================================
-INFO - 01/30/18 00:48:53 - 0:26:12 -                        Dataset      Found     Not found          Rho
-INFO - 01/30/18 00:48:53 - 0:26:12 - ====================================================================
-INFO - 01/30/18 00:48:53 - 0:26:12 -                EN_ES_SEMEVAL17        729            19       0.5767
-INFO - 01/30/18 00:48:53 - 0:26:12 - ====================================================================
-INFO - 01/30/18 00:48:53 - 0:26:12 - Cross-lingual word similarity score average: 0.57671
-INFO - 01/30/18 00:48:53 - 0:26:12 - Found 2975 pairs of words in the dictionary (1500 unique). 0 other pairs contained at least one unknown word (0 in lang1, 0 in lang2)
-INFO - 01/30/18 00:48:53 - 0:26:12 - 1500 source words - nn - Precision at k = 1: 20.666667
-INFO - 01/30/18 00:48:53 - 0:26:12 - 1500 source words - nn - Precision at k = 5: 37.200000
-INFO - 01/30/18 00:48:54 - 0:26:13 - 1500 source words - nn - Precision at k = 10: 43.866667
-INFO - 01/30/18 00:48:54 - 0:26:13 - Found 2975 pairs of words in the dictionary (1500 unique). 0 other pairs contained at least one unknown word (0 in lang1, 0 in lang2)
-INFO - 01/30/18 00:49:22 - 0:26:41 - 1500 source words - csls_knn_10 - Precision at k = 1: 31.800000
-INFO - 01/30/18 00:49:22 - 0:26:41 - 1500 source words - csls_knn_10 - Precision at k = 5: 49.000000
-INFO - 01/30/18 00:49:23 - 0:26:42 - 1500 source words - csls_knn_10 - Precision at k = 10: 56.466667
-INFO - 01/30/18 00:49:43 - 0:27:02 - Building the train dictionary ...
-INFO - 01/30/18 00:49:43 - 0:27:02 - New train dictionary of 2339 pairs.
-INFO - 01/30/18 00:49:43 - 0:27:02 - Mean cosine (nn method, S2T build, 10000 max size): 0.56065
-INFO - 01/30/18 00:51:09 - 0:28:28 - Building the train dictionary ...
-INFO - 01/30/18 00:51:09 - 0:28:28 - New train dictionary of 3221 pairs.
-INFO - 01/30/18 00:51:09 - 0:28:28 - Mean cosine (csls_knn_10 method, S2T build, 10000 max size): 0.53287
-INFO - 01/30/18 00:51:13 - 0:28:32 - Discriminator source / target predictions: 0.89890 / 0.32330
-INFO - 01/30/18 00:51:13 - 0:28:32 - Discriminator source / target / global accuracy: 0.99720 / 0.77079 / 0.88399
+fountain: fontanna grota nimfeum wodotrysk kandelabr skwer kapliczny zdrojowy fontanka altana
+vernon: michalin puchała augustynek tworek roszczynialski miegoń pietraszek kobiela poreda krzymiński
+dust: szron pył pyłowy mgiełka dziura obłok drobinka kropelka brud okruch
+moments: przebłysk przedsmak dwudziestominutowy emocjonować trzyminutowy dwuminutowy kilkuminutowy dziesięciominutowy pamiętny jednominutowy
+discography: dyskografia bublé tangled foxy discografia koяn p-funk ub40 jarboe audioslave
+barrier: bariera barierowy przegrodzić ochronny newralgiczny wodochronny odgrodzić zakotwić chronić igielny
+bee: szerszeń chrabąszcz szarak świerszczak ćma skakun cykada szarańczak szpak trzmiel
+gathering: zbierać urządzać zebranie gromadzić zebrać doroczny dorocznie odbywać dożynek obywać
+researcher: naukowiec ekspertka badaczka amerykanista biolog badanie iranista biocybernetyka radiobiologia neurobiolog
+lover: kochanek ukochać kochanka zakochać pokochać wejrzeć nieznajomy rozkochać pocałunek ukochany
+rap: hip-hopowy trip-hop hip-hop hopowy rap gangsta hop doggystyle rapcore crunk
+casting: montaż casting charakteryzacja ekranowy superprodukcja podkładać gorący castingowy obsada spellinga
+morrison: roniewicz kwietniewski rynkowski solak promiński piętowski sipiński koralewski konwiński mazolewski
+honored: uhonorować honorować wręczać nagrodzić zasłużyć honorowy patronować przyznawać cześć uczcić
+chest: piersiowy dłoń klatka szyja głowa przedramię brzuch kark plecy pierś
+strait: cieśnina półwysep morze zatoka płw kerczeński atlantyk bering kaletański mierzeja
+indo: austronezyjski austroazjatycki indoirański indoeuropejski indoaryjski nieindoeuropejski atapaskański wschodnioazjatycki mon-khmer zachodniogermański
+announcement: zapowiedzieć zapowiedź oficjalny poinformować zaanonsować ogłosić intencyjny anonsować sierpniowy oświadczyć
+harmony: harmonia harmonijny dysharmonia harmonista harmonijnie harmonica instrumentalizacja współbrzmienie harmonies armonia
+accuracy: niedokładność dokładność precyzja precyzyjność niedokładny korygować dokładny trafność poprawność porównywalność
 ```
 
-### Summary
-Clearly, after 5 epoch for `k = 1, 5, 10` for the EN-PL task the model works terribly badly, whereas for the EN-ES task the model works as stated in the paper.
-This significant difference might be caused by the fact that, compared to English or Spanish, there is an enormous number of inflection rules in Polish. For example, the word 'mam' could be derived from any of these: 'mama' [the mother], 'mamić' [to beguile] or 'mieć' [to have]. We suppose that there may not be any good linear relationship between Polish and English embeddings.
+And here are some sample translatiosn for EN-ES:
+```
+thursday: sábado miércoles viernes martes jueves lunes mañana madrugada día víspera
+operators: operadores operadoras operador demostradores prestadores contadores suministradores operados cooperadores operadas
+chilean: chileno chileno» peruano chilena chilenos chilenas chile, arequipeño chilena» arequipeña
+departed: arribando embarcaría partió partieron regresarían regresaba regresaron embarcaron arribó embarcando
+dirty: sucia sucios sucias sucio limpia poquianchis trapos harapos maldita morocha
+dimension: dimensión dimensionalidad dimensionado dimensionar dimensionales dimensional dimensionamiento tetradimensional unidimensional espaciotemporal
+cleared: despejando despejar despeja despejaron despejó adelantadas quedando allanando aclaradas adelantando
+simpson: simpson mcbain stewart matthews reubens partridge reid mccauley buckley willis
+thriller: thriller suspense policiaca suspenso policíaca policíaco policiaco littín fotonovela ambientada
+richardson: crowell willis richardson hollingsworth woodard stowell howells mcwilliams mcgillis milligan
+grants: otorgaran becas concedan concedidos otorgara otorgamiento conceden otorgadas otorguen otorgados
+tested: probando probados probadas probaron pruebas probado prueba probada probó probar
+paying: pagar pagando pagada pago remuneración paga adeudaba retribución pagaran pagase
+spy: espía espías espionaje contraespionaje secreta secreto desertor secretos encubierto exagente
+silly: absurda tonta tontería estúpida ridícula ridículo descabellada absurdas chocante pataleta
+novelists: novelistas ensayistas cuentistas escritoras escritores autobiógrafos literarios dramaturgos ilustradores poetas
+warrior: guerrera espadachín guerreros samurái valeroso guerreras gladiador samurai paladín guerrero
+cornell: cornell stanford tufts yale harvard northwestern depaul duke ucla wesleyan
+probability: probabilidad probabilidades probabilístico probabilísticas probabilística probabilísticos probabilista estimador varianza estocástico
+subway: metro monorraíl monorail –avenida premetro metrotrén square–calle metrotranvía shinkansen autobus
+```
 
-We tried to improve the model performance on PL-EN translation task by changing Polish embeddings. First, using [Morfeusz](http://sgjp.pl/morfeusz/morfeusz.html.en) we mapped words form Polish Wikipedia to their uninflected forms. If there were multiple uninflected forms of a word then we chose the most frequent one (e.g., for 'mam' we chose 'mieć'). Then, we used this corpora to train new Polish embeddings. They proved to train the model way better.
-
-TODO: dodać jakieś konkretne procenty
-
-To conclude, the paper is nicely written, the subject is interesting, the method gives good performance but there is still room for improvement. 
-
+To conclude, the paper is nicely written, the subject is interesting, the method gives good performance but there is still room for improvement.
 
 ## Acknowledgments
 The authors thank Google for GCE Credits awarded through Google Cloud Platform Education Grants to the Neural Networks and Deep Learning course and to this project.
-
