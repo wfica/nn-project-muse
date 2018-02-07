@@ -93,7 +93,7 @@ Results for EN-ES are comparable to those presented in the paper.
 
 We also changed the source code a little in order to get those translations and not only percentage accuracy.
 
-Here are some samples for EN-PL, you see 10 nearest neighbours starting with the most probable:
+Here are some samples for EN-PL, you see 10 nearest neighbours starting with the most probable (the closest):
 ```
 fountain: fontanna grota nimfeum wodotrysk kandelabr skwer kapliczny zdrojowy fontanka altana
 vernon: michalin puchała augustynek tworek roszczynialski miegoń pietraszek kobiela poreda krzymiński
