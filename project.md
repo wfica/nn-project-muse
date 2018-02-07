@@ -117,7 +117,7 @@ harmony: harmonia harmonijny dysharmonia harmonista harmonijnie harmonica instru
 accuracy: niedokładność dokładność precyzja precyzyjność niedokładny korygować dokładny trafność poprawność porównywalność
 ```
 
-And here are some sample translatiosn for EN-ES:
+And here are some sample translations for EN-ES:
 ```
 thursday: sábado miércoles viernes martes jueves lunes mañana madrugada día víspera
 operators: operadores operadoras operador demostradores prestadores contadores suministradores operados cooperadores operadas
